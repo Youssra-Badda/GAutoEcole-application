@@ -61,21 +61,21 @@ public class CoursController {
      
      @GetMapping("/")
      public ResponseEntity<String> getHelloMessageFromCondidatService() {
-    	// return ResponseEntity.ok("Message from Condidat Service");
-         String condidatUrl = condidatServiceUrl + "/";
-         ResponseEntity<String> response = restTemplate.exchange(
-             condidatUrl,
-             HttpMethod.GET,
-             null,
-             String.class
-         );
-
-         if (response.getStatusCode() == HttpStatus.OK) {
-             String helloMessage = response.getBody();
-             return ResponseEntity.ok("Message from Condidat Service: " + helloMessage);
-         } else {
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-         }
+        return ResponseEntity.ok("Message from Condidat Service");
+//         String condidatUrl = condidatServiceUrl + "/";
+//         ResponseEntity<String> response = restTemplate.exchange(
+//             condidatUrl,
+//             HttpMethod.GET,
+//             null,
+//             String.class
+//         );
+//
+//         if (response.getStatusCode() == HttpStatus.OK) {
+//             String helloMessage = response.getBody();
+//             return ResponseEntity.ok("Message from Condidat Service: " + helloMessage);
+//         } else {
+//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//         }
      }
      
   //****************COMMUNICATION AVEC AUTRE SERVICE************************

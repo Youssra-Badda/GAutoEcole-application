@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,6 @@ import com.condidat.dto.MoniteurDTO;
 import com.condidat.dto.VehiculeDTO;
 import com.condidat.entities.AutoEcole;
 import com.condidat.entities.Condidat;
-import com.condidat.entities.Contrat;
 import com.condidat.entities.IdRequest;
 import com.condidat.entities.TypeFormation;
 import com.condidat.services.IAutoEcoleService;
@@ -94,12 +94,8 @@ public class CondidatController {
 		try {
 			
 			Long idc=condidat.getId();
-//		    Categorie newCategorie = categorieRepository.findById(condidat.getCatgorie().getId())
-//		    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Catégorie non trouvée avec l'ID: " + condidat.getCatgorie().getId()));
-//	
-
 		    Condidat existingCondidat=service.getCondidatByIdAndAutoEcoleId(idc, idA);
-	        
+	       
 	        if (existingCondidat == null) {
 	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Condidat non trouvé avec l'ID: " + idc);
 	        }
@@ -206,7 +202,7 @@ public class CondidatController {
 	@GetMapping("/CondidatsById")
 	public  ResponseEntity<?> GetCondidat2(@RequestAttribute Long idA, @RequestBody IdRequest request) {
 
-	    Long idC=request.getIdC();	
+	    Long idC=request.getIdc();	
 		Condidat condidat = service.getCondidatByIdAndAutoEcoleId(idC, idA);
 	    if (condidat != null) {
 	        return ResponseEntity.ok(condidat);
@@ -256,7 +252,7 @@ public class CondidatController {
 	
     @PostMapping("/listCondidat")
     public ResponseEntity<List<Condidat>> getListCondidat(@RequestAttribute Long idA,@RequestBody IdRequest request){
-    	List<Long> condidatId=request.getCondidatId();
+    	List<Long> condidatId=request.getCondidat_id();
         return  ResponseEntity.status(HttpStatus.CREATED).body(service.getGroupOfCondidat(idA, condidatId));
     			
     }
@@ -264,7 +260,7 @@ public class CondidatController {
 	
 	@DeleteMapping("/ArchiveCondidat")
     public ResponseEntity<String> archiveCondidat(@RequestAttribute Long idA,@RequestBody IdRequest request) {
-		Long id=request.getIdC();
+		Long id=request.getIdc();
         ResponseEntity<List<Condidat>> condidatsResponse = GetAllCondidat(idA, "Active");
         Condidat condidat = service.getCondidat(id);
         List<Condidat> condidats = condidatsResponse.getBody();
@@ -286,7 +282,7 @@ public class CondidatController {
 	@RequestMapping("/disarchiveCondidat")
 	public ResponseEntity<?> Disarchive(@RequestAttribute Long idA,@RequestBody IdRequest request)
 	{
-		Long id=request.getIdC();
+		Long id=request.getIdc();
 		ResponseEntity<List<Condidat>> condidatsResponse=GetAllCondidat(idA,"Archive");
 		Condidat c=service.getCondidat(id);
 		 List<Condidat> condidats = condidatsResponse.getBody();
@@ -304,7 +300,7 @@ public class CondidatController {
 	
 	@DeleteMapping("/deleteCondidat") //passer au hestorique
 	public ResponseEntity<String> supprimerCondidat(@RequestAttribute Long idA,@RequestBody IdRequest request) { //suprimer transferer dans l'historique 
-		Long id=request.getIdC();
+		Long id=request.getIdc();
 		ResponseEntity<List<Condidat>> condidatsResponse=GetAllCondidat(idA,"Active");
 		Condidat condidat= service.getCondidat(id);
 		 List<Condidat> condidats = condidatsResponse.getBody();
@@ -332,7 +328,7 @@ public class CondidatController {
 	
 	@DeleteMapping("/delCondidat") //suppresion normal
 	public void delCondidats(@RequestAttribute Long idA,@RequestBody IdRequest request) {
-		Long id=request.getIdC();
+		Long id=request.getIdc();
 		ResponseEntity<List<Condidat>> condidatsResponse=GetAllCondidat(idA,"Active");
 		Condidat condidat= service.getCondidat(id);
 		List<Condidat> condidats = condidatsResponse.getBody();
@@ -351,13 +347,8 @@ public class CondidatController {
 	
 	@GetMapping("/Contrat") 
 	public ResponseEntity<?> getContratbyId(@RequestAttribute Long idA,@RequestBody IdRequest request) {
-//		Long id=request.getIdC();
-//	    Contrat contratinfo = contratService.getContratbyCondidat(idA, id);
-//	    if (contratinfo == null) {
-//	        String errorMessage = "Contrat not found with ID: " + id;
-//	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-//	    }
-		Long id=request.getIdC();
+
+		Long id=request.getIdc();
 		Condidat condidat=service.getCondidatByIdAndAutoEcoleId(id, idA);
 		//Condidat condidat=condidatResponse.getBody();
 		if (condidat == null) {
@@ -387,7 +378,7 @@ public class CondidatController {
      
 	@GetMapping("/Certificat")
 	public ResponseEntity<?> getCertificat(@RequestAttribute Long idA,@RequestBody IdRequest request){
-		Long id=request.getIdC();
+		Long id=request.getIdc();
 		Condidat condidat=service.getCondidatByIdAndAutoEcoleId(id, idA);
 		//Condidat condidat=condidatResponse.getBody();
 		if (condidat == null) {
@@ -414,12 +405,12 @@ public class CondidatController {
 		certificatInfo.setCondidat_prenom(condidat.getNom_frenc());
 		certificatInfo.setCin(condidat.getCin());
 		certificatInfo.setCondidat_date_inscription(condidat.getDate_inscription());
-		certificatInfo.setMon_pratique_nom(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getNomEmp());
-		certificatInfo.setMon_pratique_prenom(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getPrenomEmp());
-		certificatInfo.setMon_pratique_npc(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getNpcEmp());
-		certificatInfo.setMon_theorique_nom(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNomEmp());
-		certificatInfo.setMon_theorique_prenom(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getPrenomEmp());
-		certificatInfo.setMon_theorique_npc(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNpcEmp());
+		certificatInfo.setMon_pratique_nom(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getNom_emp());
+		certificatInfo.setMon_pratique_prenom(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getPrenom_emp());
+		certificatInfo.setMon_pratique_npc(service.getMoniteurPratiqueFromServiceEmploye(condidat.getMoniteur_pratique(), idA).getNpc_emp());
+		certificatInfo.setMon_theorique_nom(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNom_emp());
+		certificatInfo.setMon_theorique_prenom(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getPrenom_emp());
+		certificatInfo.setMon_theorique_npc(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNpc_emp());
 	    
 		
 		
@@ -430,9 +421,8 @@ public class CondidatController {
 
 	@GetMapping("/CarteCondidat")
 	public ResponseEntity<?> GetCarteCondidat(@RequestAttribute Long idA,@RequestBody IdRequest request) {
-//		ResponseEntity<Condidat> condidatResponse=GetCondidat(idA,id);
-//		Condidat condidat=condidatResponse.getBody();
-		Long id=request.getIdC();
+
+		Long id=request.getIdc();
 		Condidat condidat=service.getCondidatByIdAndAutoEcoleId(id, idA);
 		if (condidat == null) {
 	        String errorMessage = "Condidat not found with ID: " + id;
@@ -453,8 +443,8 @@ public class CondidatController {
 		carteCondidat.setDate_fin_contrat(condidat.getDate_fin_contrat());
 		carteCondidat.setMontant(condidat.getMontant());
 		
-		carteCondidat.setNom_moniteur_theorique(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNomEmp());
-		carteCondidat.setPrenom_moniteur_theorique(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getPrenomEmp());
+		carteCondidat.setNom_moniteur_theorique(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getNom_emp());
+		carteCondidat.setPrenom_moniteur_theorique(service.getMoniteurTheoriqueFromServiceEmploye(condidat.getMoniteur_theorique(), idA).getPrenom_emp());
 
 		
 		return ResponseEntity.ok(carteCondidat);

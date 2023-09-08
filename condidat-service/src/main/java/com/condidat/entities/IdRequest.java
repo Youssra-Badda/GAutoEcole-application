@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class IdRequest {
-       private Long idC;
-       private Long idP;
-       private List<Long> condidatId;
-       private List<Long> payementId;
+       private Long idc;
+       private Long idp;
+       private List<Long> condidat_id;
+       private List<Long> payement_id;
        private Long idv;
        private Long idm;
        }

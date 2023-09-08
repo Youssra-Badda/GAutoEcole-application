@@ -1,9 +1,12 @@
 package com.cours.dto;
 
 import java.time.LocalDate;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cours.dto.AutoEcoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,27 +16,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MoniteurDTO {
 	private Long id;
-	private String nomEmp;
-	private String nomEmpArb;
-	private String prenomEmp;
-	private String prenomEmpArb;
+	private String nom_emp;
+	private String nom_emp_arb;
+	private String prenom_emp;
+	private String prenom_emp_arb;
 	private String CIN;
-	private LocalDate dateNaissEmp;
-	private String lieuNaissEmp;
-	private String emailEmp;
+	private LocalDate date_naiss_emp;
+	private String lieu_naiss_emp;
+	private String email_emp;
 	private String tel;
-	private LocalDate dateEmbauche;
-	private String capnEmp;
-	private String npcEmp;
-	private String addrEmp;
+	private LocalDate date_embauche;
+	private String capn_emp;
+	private String npc_emp;
+	private String addr_emp;
 	private String etat;
 	private Long typeEmp; //TypeEmploieDTO
 	private String Observations;
-	private AutoEcoleDTO autoEcole;
+	private AutoEcoleDTO auto_ecole;
 	private List<Long> absences;
-	private String typeMoniteur;//TypeMoniteur enum
-	private String carteMoniteur;
-	private LocalDate expirCarteMonit;
+	private String type_moniteur;//TypeMoniteur enum
+	private String carte_moniteur;
+	private LocalDate expir_carte_monit;
 	private List<Long> categories = new ArrayList<>();
 
 }

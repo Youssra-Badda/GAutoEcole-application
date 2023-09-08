@@ -157,8 +157,8 @@ public class PaiementController {
 	@DeleteMapping("/deletePayment")
 	public ResponseEntity<?> deletePayment(@RequestBody IdRequest request,@RequestAttribute Long idA) {
 		
-		Long idCondidat=request.getIdC();
-		Long idPayment=request.getIdP();
+		Long idCondidat=request.getIdc();
+		Long idPayment=request.getIdp();
 	   // Condidat condidat = SCondidat.getCondidat(idCondidat);
 	    Condidat condidat = SCondidat.getCondidatByIdAndAutoEcoleId(idCondidat,idA);
 	    if (condidat == null) {
@@ -194,25 +194,18 @@ public class PaiementController {
 	     
 	    
 	}
-
-
-	
-
-
-	
-	
-	
+		
 	@GetMapping("/paiement")
 	public Paiement afficherPaiement( @RequestBody IdRequest request,@RequestAttribute Long idA) {
-		Long idC=request.getIdC();
-		Long idP=request.getIdP();
+		Long idC=request.getIdc();
+		Long idP=request.getIdp();
 		return Spaiement.getPaiement(idP, idC, idA);
 		
 	}
     @PostMapping("/listpayment/condidat")
     public ResponseEntity<List<Paiement>> getListCondidat(@RequestAttribute Long idA,@RequestBody IdRequest request){
-    	List<Long> payementId=request.getPayementId();
-    	Long idCondidat=request.getIdC();
+    	List<Long> payementId=request.getPayement_id();
+    	Long idCondidat=request.getIdc();
         return  ResponseEntity.status(HttpStatus.CREATED).body(Spaiement.getGroupOfPaiment(payementId, idCondidat, idA));
     }
     			
@@ -227,7 +220,7 @@ public class PaiementController {
 	
 	  @GetMapping("/condidats/paiements")  
 	  public ResponseEntity<?> getPaiementsByCondidatId(@RequestBody IdRequest request, @RequestAttribute Long idA) {
-		    Long idCondidat=request.getIdC();      
+		    Long idCondidat=request.getIdc();      
 	        List<Paiement> paiements = Spaiement.getPaiementsByCondidatId(idCondidat, idA);
             Condidat condidat = SCondidat.getCondidatByIdAndAutoEcoleId(idCondidat, idA);
             if (condidat == null) {
@@ -246,8 +239,8 @@ public class PaiementController {
 	
 	  @GetMapping("/recu")
 	  public ResponseEntity<?> RecuInfo(@RequestBody IdRequest request ,@RequestAttribute Long idA ) {
-		  Long idC=request.getIdC();
-		  Long idP=request.getIdP();
+		  Long idC=request.getIdc();
+		  Long idP=request.getIdp();
 		  Paiement paiement=Spaiement.getPaiement(idP, idC, idA);
 //		  if(paiement==null) {
 //			  String errorMessage = "Payment not found with ID: " + idP;
